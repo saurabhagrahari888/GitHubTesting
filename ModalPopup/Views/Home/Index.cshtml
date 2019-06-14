@@ -1,0 +1,40 @@
+﻿@model ModalPopup.Models.modalclass
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Accounts</button>
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Data</h4>
+                    </div>
+                    <div class="modal-body">
+                        @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            <p>@Html.Label("FirstName")   @Html.TextBoxFor(m=>m.FirstName) @Html.Label("MiddleName")   @Html.TextBoxFor(m=>m.MiddleName) @Html.Label("LastName")   @Html.TextBoxFor(m=>m.LastName)</p>
+                            <p>@Html.Label("ContactNumber")   @Html.TextBoxFor(m=>m.ContactNumber) @Html.Label("Email")   @Html.TextBoxFor(m=>m.Email) <input type="submit" value="Submit" /></p>
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,179 @@
+﻿@model IEnumerable<DevExpressProj.Models.Employee>
+@{
+    ViewData["Title"] = "Employee";
+}
+<head>
+    <style>
+        .dx-datagrid-headers {
+            background-color: #888e97;
+            border-bottom-color: #ddd;
+            border-right-color: #666d78;
+        }
+
+            .dx-datagrid-headers .dx-datagrid-table .dx-row > td {
+                border-bottom: 1px solid #ddd;
+            }
+
+        .dx-datagrid-rowsview .dx-row {
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .dx-datagrid .dx-datagrid-text-content {
+            font-weight: 600;
+            color: white;
+        }
+
+        .dx-datagrid .dx-row-alt.dx-row:not(.dx-row-removed) {
+            border-bottom-color: transparent;
+        }
+
+        .dx-datagrid .dx-row-lines > td {
+            border-bottom: 1px solid #ddd;
+        }
+
+        .dx-datagrid-rowsview .dx-row.dx-group-row:first-child td, .dx-datagrid-rowsview .dx-row.dx-row-lines:first-child, .dx-datagrid-rowsview .dx-row.dx-row-lines:first-child > td {
+            border-top: none;
+            background: red;
+        }
+
+        .dx-row dx-data-row dx-row-alt dx-row-lines dx-column-lines {
+            background: red;
+        }
+    </style>
+</head>
+<h2>For Testing Purpose</h2>
+@(Html.DevExtreme().DataGrid<DevExpressProj.Models.Employee>()
+                         .ShowBorders(true)
+                         .ID("TestCss")
+                            .Editing(e => e.Mode(GridEditMode.Popup)
+                            .AllowUpdating(true)
+                            .Popup(p => p
+                                .Title("Employee Info")
+                                .ShowTitle(true)
+                                .Width(700)
+                                .Height(345)
+                                .Position(pos => pos
+                                    .My(HorizontalAlignment.Center, VerticalAlignment.Top)
+                                    .At(HorizontalAlignment.Center, VerticalAlignment.Top)
+                                    .Of(new JS("window"))
+                                )
+                            )
+                        )
+
+
+
+
+                         //.Columns(columns =>
+                         //{
+                         //    for (int i = 0; i < Model.Count(); i++)
+                         //    {
+                         //        columns.Add().DataField(Model.ToString());
+                         //    }
+                         //    //  columns.Add().Caption("Employee Name").Width(230).Fixed(true).CalculateCellValue(@<text>function(data) {                    return [data.Prefix,
+                         //    //          data.FirstName, data.LastName].join(" "); } </text>);//We have To Use Give Black Color On Specific Document.
+                         //    //  columns.AddFor(m => m.EmployeeId).SortOrder(SortOrder.Asc);
+                         //    //              columns.AddFor(m => m.FirstName);
+                         //    //              columns.AddFor(m => m.LastName);
+                         //    //              columns.AddFor(m => m.EmployeeCode);
+                         //    //              columns.AddFor(m => m.Position);
+                         //    //              columns.AddFor(m => m.Office);
+                         //    // columns.HeaderStyle.BackColor = System.Drawing.ColorTranslator.FromHtml("#FF00FF");
+                         //    // columns.Styles.AlternatingRow.BackColor = System.Drawing.Color.LightCyan;
+
+                         //})
+
+                   @*.Columns(columns =>
+                   {
+                       columns.Add().Caption("Employee Name").Width(230).Fixed(true).CalculateCellValue(@<text>function(data) {                    return [data.Prefix,
+                        data.FirstName, data.LastName].join(" "); } </text>);//We have To Use Give Black Color On Specific Document.
+                columns.AddFor(m => m.EmployeeId).SortOrder(SortOrder.Asc);
+                            columns.AddFor(m => m.FirstName);
+                            columns.AddFor(m => m.LastName);
+                            columns.AddFor(m => m.EmployeeCode);
+                            columns.AddFor(m => m.Position);
+                            columns.AddFor(m => m.Office);
+                // columns.HeaderStyle.BackColor = System.Drawing.ColorTranslator.FromHtml("#FF00FF");
+                // columns.Styles.AlternatingRow.BackColor = System.Drawing.Color.LightCyan;
+
+            })*@
+
+                         .MasterDetail(md =>
+                         {
+                             md.Enabled(true);
+                             md.Template(@<text>
+                                @(Html.DevExtreme().DataGrid<DevExpressProj.Models.EmployeeAcademic>()
+                                            .ColumnAutoWidth(true)
+                                            .ShowBorders(true)
+                                            .Columns(columns =>
+                                            {
+                                                columns.AddFor(m => m.RefempId);
+
+                                                columns.AddFor(m => m.HSC);
+
+                                                columns.AddFor(m => m.SSC);
+
+                                                columns.AddFor(m => m.Graduate);
+
+                                                columns.AddFor(m => m.PostGraduate);
+
+                                                columns.Add()
+                                                    .Caption("Completed")
+                                                    .DataType(GridColumnDataType.Boolean)
+                                                    .CalculateCellValue(@"function(rowData) { return rowData.Status == ""Completed""; }");
+                                            })
+                                           .Sorting(sorting => sorting.Mode(GridSortingMode.Multiple))
+                                            .Paging(paging => paging.PageSize(2))
+                                              .Pager(pager =>
+                                              {
+                                                  pager.ShowPageSizeSelector(true);
+                                                  pager.AllowedPageSizes(new List<int> { 2, 4});
+                                                  pager.ShowInfo(true);
+                                                  pager.Visible(true);
+                                              })
+                                           .DataSource(ds => ds.Mvc().Controller("Home")
+                                                .LoadAction("TaskDetails")
+                                                .LoadParams(new { id = new JS("data.EmployeeId") })
+                                            )
+                                )
+                            </text>);
+                                })
+                               .AllowColumnReordering(true)
+                                .HoverStateEnabled(true)
+                               .RepaintChangesOnly(true)
+                              .OnRowPrepared("dataGrid_cellPrepared_handler")
+                             //  .OnCellPrepared("dataGrid_cellPrepared_handler")
+                                       .Sorting(sorting => sorting.Mode(GridSortingMode.Multiple))
+                                             .Paging(paging => paging.PageSize(3))
+                                              .Pager(pager =>
+                                              {
+                                                  pager.ShowPageSizeSelector(true);
+                                                  pager.AllowedPageSizes(new List<int> { 2, 4, 6 });
+                                                  pager.ShowInfo(true);
+                                                  pager.Visible(true);
+                                              })
+                                            .DataSource(ds => ds.Mvc().Controller("Home").LoadAction("testResult").UpdateAction("TestEditResult").Key("EmployeeId"))
+                                            .RemoteOperations(true)
+
+
+)
+
+
+<script>
+    function dataGrid_cellPrepared_handler(e) {
+        debugger;
+        if (e.rowType === "data") {
+            e.rowElement.css("background", e.data.EmployeeId >= 5 && e.data.FirstName == "DocID" ? "green" : "red");
+        }
+        //if (e.rowType === "data" && e.column.dataField === "FirstName") {
+        //    e.cellElement.css("background", e.data.EmployeeId >= 5 && e.data.FirstName == "DocID" ? "green" : "red");
+        //    // Tracks the `Amount` data field
+        //    e.watch(function () {
+        //        return e.data.EmployeeId
+        //    }, function () {
+        //       // e.cellElement.css("color", e.data.EmployeeId >= 5 ? "green" : "red");
+        //    })
+        //}
+
+    }
+</script>

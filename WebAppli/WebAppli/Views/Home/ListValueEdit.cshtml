@@ -1,0 +1,26 @@
+﻿@model WebAppli.Controllers.HomeController.Testclass
+@{
+    ViewBag.Title = "ListValueEdit";
+}
+
+<h2>ListValueEdit</h2>
+
+@using (Html.BeginForm("ListValueEdit", "Home", FormMethod.Post,  new { enctype = "multipart/form-data" } ))
+{
+    @Html.HiddenFor(m=>m.Name)
+    @Html.HiddenFor(m=>m.Address)
+
+
+    @Html.LabelFor(m=>m.Name)
+    @Html.TextBoxFor(m=>m.Name)
+
+    @Html.LabelFor(m=>m.Address)
+    @Html.TextBoxFor(m=>m.Address)
+
+    <input type="submit" value="Save Data" />
+
+
+}
+
+
+

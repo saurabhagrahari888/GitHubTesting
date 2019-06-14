@@ -1,0 +1,33 @@
+﻿@model ListPassing.Models.person
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Task1</title>
+   
+</head>
+<body>
+    <h3>@ViewBag.Text</h3>
+    @using (Html.BeginForm("Task1", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div>
+            @Html.LabelFor(m => m.FName)
+            @Html.TextBoxFor(m => m.FName, "A")
+        </div>
+        <div>
+            @Html.LabelFor(m => m.MName)
+            @Html.TextBoxFor(m => m.MName, "B")
+        </div>
+        <div>
+            @Html.LabelFor(m => m.LName)
+            @Html.TextBoxFor(m => m.LName, "C")
+        </div>
+        <div><input type="submit" value="Insert" /></div>
+    }
+</body>
+</html>

@@ -1,0 +1,38 @@
+﻿@model AjaxFormPost.Models.ClassFormData
+@{
+    ViewBag.Title = "postform";
+}
+
+<h2>postform</h2>
+<div><span>Name</span><span>@Html.TextBoxFor(m=>m.Name)</span></div>
+<div><span>Email</span><span>@Html.TextBoxFor(m => m.Email)</span></div>
+<div><span>Address</span><span>@Html.TextBoxFor(m => m.Address)</span></div>
+<input type="button" value="PostAjaxData" id="postbtn" />
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#postbtn").click(function () {
+            debugger;
+            var formData = new FormData();
+            formData.append("Name", $("#Name").val());
+            formData.append("Email", $("#Email").val());
+            formData.append("Address", $("#Address").val());
+            $.ajax({
+
+                url: "/Home/postform",
+                type: 'Post',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (response) {
+                    alert("Inserted!!!");
+                }
+
+            });
+        });
+    });
+
+</script>
+

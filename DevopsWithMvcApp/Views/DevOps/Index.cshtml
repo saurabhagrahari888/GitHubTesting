@@ -1,0 +1,207 @@
+﻿@model DevopsWithMvcApp.Models.DevOpsModel
+@{
+    ViewBag.Title = "Index";
+}
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <style>
+      .top  {
+            margin-top: 180px;
+        }
+        .btnsave {
+            margin-left:15px;
+        }
+        hr {
+            margin-top: 100px;
+        }
+        .cntrName{
+            text-align:center;
+        }
+        .body-content {
+            padding-left: 0px;
+            padding-right: 0px;
+        }
+        .marg{
+            margin:0px;
+        }
+        .pad{
+          padding:  0px;
+        }
+        .source {
+            width: 120%;
+        }
+
+    </style>
+</head>
+@using (Html.BeginForm("Index", "DevOps", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="top">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 marg pad" id="maintable">
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                <div class="cntrName">@Html.LabelFor(m => m.TaskDate)</div>
+                <div>  @Html.TextBoxFor(m => m.TaskDate, new { style = "width:180px", @class = "form-control" })</div>
+            </div>
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                <div class="cntrName">   @Html.LabelFor(m => m.Source)</div>
+                <div>
+                    @Html.DropDownListFor(x => x.Source, new[]{
+                      new SelectListItem(){ Text = "DevOps", Value = "DevOps"},
+                        new SelectListItem(){ Text = "Email", Value = "Email"},
+                          new SelectListItem(){ Text = "Incident", Value = "Incident"},
+                            new SelectListItem(){ Text = "Others", Value = "Others"}
+                            }, "Source", new { style = "", @class = "form-control source" })
+                </div>
+            </div>
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                <div class="cntrName">  @Html.LabelFor(m => m.SprintName)</div>
+                <div>   @Html.DropDownListFor(m => m.SprintName, new SelectList(Model.SprintName1, "Text"), "Sprint", new { style = "width:80px", @class = "form-control" })</div>
+            </div>
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                <div class="cntrName">  @Html.LabelFor(m => m.Pbid)</div>
+                <div> @Html.DropDownListFor(m => m.Pbid, new SelectList(Model.Pbid1), "PbId", new { style = "width:80px", @class = "form-control" })</div>
+            </div>
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-">
+                <div class="cntrName"> @Html.LabelFor(m => m.HdName)</div>
+                <div>  @Html.TextBoxFor(m => m.HdName, new { style = "width:80px", placeholder = "HdName", @class = "form-control" })       </div>         
+                
+            </div>
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                <div class="cntrName">  @Html.LabelFor(m => m.Workorder)</div>
+                <div>  @Html.DropDownListFor(m => m.Workorder, new SelectList(Model.Workorder1), "WorkOrder", new { style = "width:80px", @class = "form-control" })</div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                <div class="cntrName">  @Html.LabelFor(m => m.Description)</div>
+                <div>   @Html.TextBoxFor(m => m.Description, new { style = "width:180px", @class = "form-control" })</div>
+            </div>
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                <div class="cntrName">  @Html.LabelFor(m => m.Hours)</div>
+                <div> @Html.TextBoxFor(m => m.Hours, new { style = "width:80px", @class = "form-control" })</div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                <div class="cntrName">  @Html.LabelFor(m => m.SourceEmailDate)</div>
+                <div> @Html.TextBoxFor(m => m.SourceEmailDate, new { style = "width:170px", @class = "form-control" })</div>
+               
+            </div>
+        </div>
+        @*@for (int i = 0; i < 10; i++)
+            {
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                        @Html.TextBoxFor(m => m.Name, new { style = "width:65px" })
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                        @Html.TextBoxFor(m => m.TaskDate, new { style = "width:65px" })
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                        @Html.DropDownListFor(x => x.Source, new[]{
+                               new SelectListItem(){ Text = "DevOps", Value = "1"},
+                                 new SelectListItem(){ Text = "Email", Value = "2"},
+                                   new SelectListItem(){ Text = "Incident", Value = "3"},
+                                     new SelectListItem(){ Text = "Others", Value = "4"}
+                                     }, "Source", new { style = "width:80px" })
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                        @Html.DropDownListFor(m => m.SprintName, new SelectList(Model.SprintName1), "Sprint", new { style = "width:80px" })
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                        @Html.DropDownListFor(m => m.Pbid, new SelectList(Model.Pbid1), "PbId", new { style = "width:80px" })
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-">
+                        @Html.TextBoxFor(m => m.HdName, new { style = "width:65px" })
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                        @Html.DropDownListFor(m => m.Workorder, new SelectList(Model.Workorder1), "WorkOrder", new { style = "width:80px" })
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                        @Html.TextBoxFor(m => m.Description, new { style = "width:65px" })
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                        @Html.TextBoxFor(m => m.Hours, new { style = "width:65px" })
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                        @Html.TextBoxFor(m => m.SourceEmailDate, new { style = "width:65px" })
+                    </div>
+                </div>
+            }*@
+        <div> <input type="submit" value="Save All" class="btnsave form-control" /></div>
+        @*<div><input type="button" value="Add" id="addrows" /></div>*@
+    </div>
+}
+<script>
+    $(document).ready(function () {  
+
+
+        let rowIndex = 0;
+
+        $("#addrows").click(function () {
+            debugger;
+            $('#maintable div:last').after(`<tr><td><input type="text" name="rollno${rowIndex++}"/></td>
+      <td><input type="text" name="firstname${rowIndex++}"/></td>
+      <td> <input type="text" name="lastname${rowIndex++}"/></td></tr>`);
+        });
+
+
+
+        $('#SprintName,#Pbid,#HdName,#Workorder').prop("disabled", true);
+        $('#Source').change(function () {
+            var selectedTfs = $('#Source option:selected').text();
+            if (selectedTfs == "DevOps" && selectedTfs != "Source") {
+                $('#SprintName').prop("disabled", false);
+            }
+            else if ((selectedTfs == "Email" || selectedTfs == "Incident" || selectedTfs == "Others") && selectedTfs != "Source") {
+                $('#SprintName').val('Sprint');
+                $('#Description').val('');
+                $('#SprintName,#Pbid,#HdName,#Workorder').prop("disabled", true);
+                $('#Description').prop("disabled", false);
+                $('#Description').attr("readonly", false);
+            }
+            else {
+                $('#SprintName,#Pbid,#HdName,#Workorder,#Hours').prop("disabled", true);
+                $('#Description').prop("disabled", true);
+            }
+            $('#SprintName').change(function () {
+                var selectedsprint = $('#SprintName option:selected').text();
+                if (selectedsprint != "" && selectedsprint != "Sprint") {
+                    $('#Pbid').prop("disabled", false);
+                }
+                else {
+                    $('#SprintName,#Pbid,#HdName,#Workorder,#Hours').prop("disabled", true);
+                }
+            });
+            $('#Pbid').change(function () {
+                var selectedPbid = $('#Pbid option:selected').text();
+                $.ajax({
+                    url: '/DevOps/title',
+                    type: 'get',
+                    data: { 'id': selectedPbid },
+                    cache: false,
+                    success: function (response) {
+                        $('#Description').val(response);
+                        $('#Description').attr("readonly", "true");
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Error !!!!!')
+                    }
+                });
+                if (selectedPbid != "" && selectedPbid != "PbId") {
+                    $('#Workorder').prop("disabled", false);
+                    $('#HdName').prop("disabled", false);
+                }
+                else {
+                    $('#Pbid,#HdName,#Workorder,#Hours').prop("disabled", true);
+                }
+            });
+            $('#Workorder').change(function () {
+                var selectedworkorder = $('#Workorder option:selected').text();
+                if (selectedworkorder != "" && selectedworkorder != "WorkOrder") {
+                    $('#Hours').prop("disabled", false);
+                }
+                else {
+                    $('#HdName,#Workorder,#Hours').prop("disabled", true);
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,16 @@
+﻿@model AandA.Models.SessionClass
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+@using (Html.BeginForm("Index", "SessionWork", FormMethod.Post, new { enctype = "multipart/form-data" })) {
+
+    @Html.LabelFor(m=>m.UserName)
+    @Html.TextBoxFor(m=>m.UserName,new { @class="form-control"})
+    @Html.LabelFor(m=>m.Password)
+    @Html.TextBoxFor(m=>m.Password,new { @class="form-control"})
+    <input type="submit" value="Login" />
+
+}
+

@@ -1,0 +1,13 @@
+﻿@model PreserveValues.Models.TestClass
+@{
+    ViewBag.Title = "TestValues";
+}
+
+<h2>TestValues</h2>
+@using (Html.BeginForm("TestValues","Home",FormMethod.Post,new { enctype = "multipart/form-data" })) { 
+@Html.DropDownListFor(m => m.Name, new SelectList(Model.Name, "Text"), "- Please select a Name -")
+@*@Html.DropDownListFor(m => m.Name, new SelectList(Model.EmailId, "Text"), "- Please select a EmailId -")*@
+
+    <input type="submit" value="PostToController" />
+
+}

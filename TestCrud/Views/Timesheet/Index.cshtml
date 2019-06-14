@@ -1,0 +1,192 @@
+﻿@model IEnumerable<TestCrud.Models.TimeSheet>
+@{
+    ViewBag.Title = "Index";
+}
+<head>
+</head>
+<h2>Index</h2>
+
+<div id="selectbox-demo">
+    <div class="widget-container">
+        <div class="dx-fieldset">
+            <div class="dx-field">
+                <div class="dx-field-label">Name</div>
+                <div class="dx-field-value">
+                    @(Html.DevExtreme().SelectBox()     .ID("search-box")
+                                                        .DataSource(d => d
+                                                            .Mvc()
+                                                            .Controller("Timesheet")
+                                                            .LoadAction("GetItems")
+                                                            .Key("Value")
+                                                        )
+                                                        .DisplayExpr("Text")
+                                                        .ValueExpr("Value")
+                                                        .OnValueChanged("selectBox_valueChanged")
+                    )
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@(Html.DevExtreme().DataGrid<TestCrud.Models.TimeSheet>()
+                                                 .DataSource(ds => ds.Mvc().Controller("Timesheet").LoadAction("GetData").InsertAction("PostData").UpdateAction("EditData").DeleteAction("DeleteData").Key("ID"))
+                                                                                    .RemoteOperations(true)
+                                                //.OnEditorPreparing("selectBox_valueChangedWorkOrder")
+                                                .Columns(columns =>
+                                                {
+                                                    columns.AddFor(m => m.TaskDate).Width(90);
+
+                                                    columns.AddFor(m => m.Source).Width(100)
+                                                       .Lookup(lookup => lookup
+                                                     .DataSource(ds => ds.Mvc().Controller("Timesheet").LoadAction("TimesheetDropdownSource").Key("Value"))
+                                                        .ValueExpr("Value")
+                                                        .DisplayExpr("Text")
+                                                    );
+
+                                                    columns.AddFor(m => m.Sprint).Width(160)
+                                                     .Lookup(lookup => lookup
+                                                     .DataSource(ds => ds.Mvc().Controller("Timesheet").LoadAction("Timesheetdropdowns").Key("Value"))
+                                                        .ValueExpr("Value")
+                                                        .DisplayExpr("Text")
+                                                    );
+                                                    columns.AddFor(m => m.PBId).Width(90).Lookup(lookup => lookup
+                                                    .DataSource(ds => ds.Mvc().Controller("Timesheet").LoadAction("TimesheetdropdownsPBID").Key("Value"))
+                                                       .ValueExpr("Value")
+                                                       .DisplayExpr("Text")
+                                                    ).SetCellValue("selectBox_valueChangedWorkOrder");
+
+
+                                                    columns.AddFor(m => m.WorkorderType).Width(90);
+
+                                                    //columns.AddFor(m => m.WorkorderType).Width(90).Lookup(lookup => lookup
+                                                    //.DataSource(ds => ds.Mvc().Controller("Timesheet").LoadAction("TimesheetdropdownsWorkOrder").Key("Value"))
+                                                    //   .ValueExpr("Value")
+                                                    //   .DisplayExpr("Text")
+                                                    //);
+                                                    columns.AddFor(m => m.HdName).Width(150);
+                                                    columns.AddFor(m => m.Description);
+                                                    columns.AddFor(m => m.Hours).Width(90);
+
+                                                })
+
+                                                .FilterRow(f => f.Visible(true))
+                                                .HeaderFilter(f => f.Visible(true))
+                                                .GroupPanel(p => p.Visible(true))
+                                                .Scrolling(s => s.Mode(GridScrollingMode.Virtual))
+                                                .Height(600)
+                                                .ShowBorders(true)
+                                                .Editing(e => e.AllowAdding(true).AllowDeleting(true).AllowUpdating(true).Mode(GridEditMode.Batch).UseIcons(true))
+                                                .Grouping(g => g.AutoExpandAll(false))
+)
+
+<script type="text/javascript">
+
+    function selectBox_valueChanged(data) {
+        var a = data.value;
+
+        $.ajax({
+            type: "GET",
+            url: '/Timesheet/FetchId/'+a,
+            data: JSON.stringify(a),
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function () {            
+            },
+            success: function (response) {             
+                $("#container").html(response); 
+            },
+            error: function (e) {
+                alert("Error Value");
+            }
+        });
+    }
+    function selectBox_valueChangedWorkOrder(rowData,value) {
+        debugger;
+       // if (data.parentType === "dataRow" && data.dataField === "PBId") {
+        debugger;
+       // rowData.PBId = value;
+        var a = value;
+        $.ajax({
+            type: "GET",
+            url: '/Timesheet/Title/' + a,
+            data: JSON.stringify(a),
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function () {
+            },
+            success: function (response) {
+                alert("Suceess!!!!");
+                $("#container").html(response);
+            },
+            error: function (e) {
+                alert("Error Value");
+            }
+            });
+     //   }
+    }
+</script>
+
+
+@*<script>
+        $(document).ready(function () {
+            debugger;
+            $('#SprintName,#Pbid,#HdName,#Workorder').prop("disabled", true);
+            $('#Source').change(function () {
+                var selectedTfs = $('#Source option:selected').text();
+                if (selectedTfs == "DevOps" && selectedTfs != "Source") {
+                    $('#SprintName').prop("disabled", false);
+                }
+                else if ((selectedTfs == "Email" || selectedTfs == "Incident" || selectedTfs == "Others") && selectedTfs != "Source") {
+                    $('#SprintName').val('Sprint');
+                    $('#Description').val('');
+                    $('#SprintName,#Pbid,#HdName,#Workorder').prop("disabled", true);
+                    $('#Description').prop("disabled", false);
+                    $('#Description').attr("readonly", false);
+                }
+                else {
+                    $('#SprintName,#Pbid,#HdName,#Workorder,#Hours').prop("disabled", true);
+                    $('#Description').prop("disabled", true);
+                }
+                $('#SprintName').change(function () {
+                    var selectedsprint = $('#SprintName option:selected').text();
+                    if (selectedsprint != "" && selectedsprint != "Sprint") {
+                        $('#Pbid').prop("disabled", false);
+                    }
+                    else {
+                        $('#SprintName,#Pbid,#HdName,#Workorder,#Hours').prop("disabled", true);
+                    }
+                });
+                $('#Pbid').change(function () {
+                    var selectedPbid = $('#Pbid option:selected').text();
+                    $.ajax({
+                        url: '/DevOps/title',
+                        type: 'get',
+                        data: { 'id': selectedPbid },
+                        cache: false,
+                        success: function (response) {
+                            $('#Description').val(response);
+                            $('#Description').attr("readonly", "true");
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert('Error !!!!!')
+                        }
+                    });
+                    if (selectedPbid != "" && selectedPbid != "PbId") {
+                        $('#Workorder').prop("disabled", false);
+                        $('#HdName').prop("disabled", false);
+                    }
+                    else {
+                        $('#Pbid,#HdName,#Workorder,#Hours').prop("disabled", true);
+                    }
+                });
+                $('#Workorder').change(function () {
+                    var selectedworkorder = $('#Workorder option:selected').text();
+                    if (selectedworkorder != "" && selectedworkorder != "WorkOrder") {
+                        $('#Hours').prop("disabled", false);
+                    }
+                    else {
+                        $('#HdName,#Workorder,#Hours').prop("disabled", true);
+                    }
+                });
+            });
+        });
+    </script>*@

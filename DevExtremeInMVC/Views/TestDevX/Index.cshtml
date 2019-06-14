@@ -1,0 +1,31 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+@using DevExpress.Web.Mvc.UI;
+@{
+    ViewBag.Title = "Index";
+}
+<script src="@Url.Content("~/Scripts/jquery-3.3.1.min.js")" type="text/javascript"></script>
+<h2>Index</h2>
+
+@(Html.DevExtreme().DataGrid<DevExtremeInMVC.Models.Employee>()
+        .Columns(columns =>
+        {
+
+            columns.AddFor(m => m.EmployeeId);
+
+            columns.AddFor(m => m.FirstName);
+
+            columns.AddFor(m => m.LastName);
+
+            columns.AddFor(m => m.EmployeeCode);
+
+            columns.AddFor(m => m.Position);
+
+            columns.AddFor(m => m.Office);
+        })
+        .Editing(e => e
+            .AllowAdding(true)
+            .AllowUpdating(true)
+            .AllowDeleting(true)
+        )
+)
+

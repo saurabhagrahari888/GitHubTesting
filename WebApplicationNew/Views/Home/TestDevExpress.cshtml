@@ -1,0 +1,47 @@
+﻿@model IEnumerable<WebApplicationNew.Models.Employee>
+@{
+    ViewBag.Title = "TestDevExpress";
+}
+
+<h2>TestDevExpress</h2>
+
+@(Html.DevExtreme().DataGrid<WebApplicationNew.Models.Employee>()
+             .ShowBorders(true)
+             .ID("TestCss")
+                .Editing(e => e.Mode(GridEditMode.Popup)
+                .AllowUpdating(true)
+                .Popup(p => p
+                    .Title("Employee Info")
+                    .ShowTitle(true)
+                    .Width(700)
+                    .Height(345)
+                    .Position(pos => pos
+                        .My(HorizontalAlignment.Center, VerticalAlignment.Top)
+                        .At(HorizontalAlignment.Center, VerticalAlignment.Top)
+                        .Of(new JS("window"))
+                    )
+                )
+            )
+               .Columns(columns =>
+               {
+                   columns.AddFor(m => m.EmployeeId);
+                   columns.AddFor(m => m.FirstName);
+                   columns.AddFor(m => m.LastName);
+                   columns.AddFor(m => m.EmployeeCode);
+                   columns.AddFor(m => m.Position);
+                   columns.AddFor(m => m.Office);
+       // columns.HeaderStyle.BackColor = System.Drawing.ColorTranslator.FromHtml("#FF00FF");
+   })
+               .Sorting(sorting => sorting.Mode(GridSortingMode.Multiple))
+                     .Paging(paging => paging.PageSize(3))
+                      .Pager(pager =>
+                      {
+                          pager.ShowPageSizeSelector(true);
+                          pager.AllowedPageSizes(new List<int> { 2, 4, 6 });
+                          pager.ShowInfo(true);
+                      })
+                    .DataSource(ds => ds.Mvc().Controller("Home").LoadAction("testResult").UpdateAction("TestEditResult").Key("EmployeeId"))
+                    .RemoteOperations(true)
+
+
+)

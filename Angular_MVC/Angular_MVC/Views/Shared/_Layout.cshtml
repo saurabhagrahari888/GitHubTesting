@@ -1,0 +1,17 @@
+﻿<base href="/">
+<link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/modernizr-2.6.2.js"></script>
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+
+<!-- Polyfill(s) for older browsers -->
+<script src="~/node_modules/core-js/client/shim.min.js"></script>
+<script src="~/node_modules/zone.js/dist/zone.js"></script>
+<script src="~/node_modules/systemjs/dist/system.src.js"></script>
+<script src="~/CientApp/systemjs.config.js"></script>
+<script>
+    System.import('/CientApp/main.js').catch(function (err) { console.error(err); });
+</script> 

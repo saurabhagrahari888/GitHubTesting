@@ -1,0 +1,23 @@
+﻿@model ValidationProject.Models.Name
+@{
+    ViewBag.Title = "Message";
+}
+
+<h2>Message</h2>
+@using (Html.BeginForm("Message", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.LabelFor(m => m.FName)
+    @Html.TextBoxFor(m => m.FName)
+    @Html.ValidationMessageFor(m => m.FName)
+    @Html.LabelFor(m => m.MName)
+    @Html.TextBoxFor(m => m.MName)
+    @Html.ValidationMessageFor(m => m.MName)
+    @Html.LabelFor(m => m.LName)
+    @Html.TextBoxFor(m => m.LName)
+
+
+    @Html.ValidationSummary()
+    <input type="submit" value="Insert" />
+
+}
+

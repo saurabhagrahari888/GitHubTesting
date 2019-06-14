@@ -1,0 +1,43 @@
+﻿@model IEnumerable<WebAppli.Controllers.HomeController.Testclass>
+@{
+    ViewBag.Title = "ListValues";
+}
+
+<h2>ListValues</h2>
+<table>
+    <thead>
+        <th>
+            Id 
+        </th>
+        <th>
+            Name
+        </th>
+        <th>
+            Address
+        </th>
+        <th>
+            Action Results
+        </th>
+    </thead>
+    
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.Id
+            </td>
+            <td>
+                @item.Name
+            </td>
+            <td>
+                @item.Address
+            </td>
+            <td>
+                @Html.ActionLink("Edit","ListValueEdit", new { @id = item.Id} )
+            </td>
+        </tr>
+    }
+</table>
+
+
