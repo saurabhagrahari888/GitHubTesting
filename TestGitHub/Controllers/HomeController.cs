@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace GitHubCloningProject.Controllers
+namespace TestGitHub.Controllers
 {
     public class HomeController : Controller
     {
@@ -24,11 +24,6 @@ namespace GitHubCloningProject.Controllers
         {
             ViewBag.Message = "Your contact page.";
 
-            return View();
-        }
-
-        public  ActionResult testGitProject()
-        {
             return View();
         }
     }
